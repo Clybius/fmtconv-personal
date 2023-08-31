@@ -1070,6 +1070,7 @@ Possible values are:</p>
 <tr><td><b><code>&quot;red3&quot;</code></b></td><td>R<br />G<br />B<br />W (D60)</td><td>0.70118,<br />0.30060,<br />0.10815,<br />0.32168,</td><td>0.32901<br />0.68379<br />&minus;0.00869<br />0.33767</td><td>REDcolor3</td></tr>
 <tr><td><b><code>&quot;red4&quot;</code></b></td><td>R<br />G<br />B<br />W (D60)</td><td>0.70118,<br />0.30060,<br />0.14533,<br />0.32168,</td><td>0.32901<br />0.68379<br />0.05162<br />0.33767</td><td>REDcolor4</td></tr>
 <tr><td><b><code>&quot;redwide&quot;</code></b></td><td>R<br />G<br />B<br />W (D65)</td><td>0.780308,<br />0.121595,<br />0.095612,<br />0.3217,</td><td>0.304253<br />1.493994<br />&minus;0.084589<br />0.3290</td><td>REDWideGamutRGB</td></tr>
+<tr><td><b><code>&quot;awg4&quot;</code></b></td><td>R<br />G<br />B<br />W (D65)</td><td>0.7347,<br />0.1424,<br />0.0991,<br />0.3217,</td><td>0.2653<br />0.8576<br />&minus;0.0308<br />0.3290</td><td>Arri Wide Gamut 4</td></tr>
 </table>
 
 <p class="var">wconv</p>
@@ -2001,6 +2002,7 @@ and 16-bit integer for <code>nativetostack16</code>.</p>
 <ul>
 <li><code>resample</code>: fixed 14 to 16 bit AVX2 conversion path, thanks to NSQY for the report.</li>
 <li><code>transfer</code>: Added L* transfer function.</li>
+<li><code>primaries</code>: Added Arri Wide Gamut 4 colorspace.</li>
 <li>Program path without x86 SIMD: fixed wrong conversions affecting a lot of functions (noticed on ARM/Apple). Thanks to SaltyChiang for the fix.</li>
 </ul>
 
