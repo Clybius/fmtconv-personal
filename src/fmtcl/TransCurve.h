@@ -88,6 +88,7 @@ enum TransCurve
 	TransCurve_PANALOG,     // Panalog
 	TransCurve_SIGMOID,
 	TransCurve_ACESCCT,     // ACEScct
+	TransCurve_LSTAR,       // L* from CIELAB
 
 	TransCurve_NBR_ELT_CUSTOM
 };	// enum TransCurve

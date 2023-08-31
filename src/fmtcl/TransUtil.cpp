@@ -226,6 +226,10 @@ TransCurve	TransUtil::conv_string_to_curve (const std::string &str)
 	{
 		c = TransCurve_ACESCCT;
 	}
+	else if (str == "lstar")
+	{
+		c = TransCurve_LSTAR;
+	}
 	else
 	{
 		assert (false);
@@ -433,6 +437,16 @@ TransUtil::OpSPtr	TransUtil::conv_curve_to_op (TransCurve c, bool inv_flag, Tran
 		break;
 	case TransCurve_ACESCCT:
 		ptr = OpSPtr (new TransOpAcesCct (inv_flag));
+		break;
+	case TransCurve_LSTAR:
+		ptr = OpSPtr (new TransOpLinPow (
+			inv_flag,
+			TransCst::_lstar_alpha,
+			TransCst::_lstar_beta,
+			TransCst::_lstar_power,
+			TransCst::_lstar_slope,
+			0, 100 // Arbitrary high number for the upper bound (unspecified)
+		));
 		break;
 	default:
 		assert (false);
