@@ -1795,6 +1795,7 @@ cd/m<sup>2</sup>, whereas scene-referred linear scales are arbitrary.</p>
 <tr><td><b><code>&quot;slog3&quot;     </code></b></td><td>0&hellip;38.421</td><td>OETF</td><td></td><td>Sony S-Log3.</td></tr>
 <tr><td><b><code>&quot;logc2&quot;     </code></b></td><td>Unspecified</td><td>OETF</td><td></td><td>Arri Log C Alexa 2.x, linear scene exposure<br />Peak white is 57.45 linear. The negative part of the range allows coding sensor noise. <var>logceis</var> and <var>logceid</var> set the Exposure Index (EI).</td></tr>
 <tr><td><b><code>&quot;logc3&quot;     </code></b></td><td>Unspecified</td><td>OETF</td><td></td><td>Arri Log C Alexa 3.x, linear scene exposure<br />Peak white is 55.08 linear. The negative part of the range allows coding sensor noise. <var>logceis</var> and <var>logceid</var> set the Exposure Index (EI).</td></tr>
+<tr><td><b><code>&quot;logc4&quot;     </code></b></td><td>Unspecified</td><td>OETF</td><td></td><td>Arri LogC4, linear scene exposure<br />Peak white is 469.80 but this is only a hardware limit.</td></tr>
 <tr><td><b><code>&quot;canonlog&quot;  </code></b></td><td>0&hellip;8.00903</td><td>OETF</td><td></td><td>Canon-Log<br />Peak white is 8.00903 in linear scale and 1.08676 in compressed scale.</td></tr>
 <tr><td><b><code>&quot;adobergb&quot;  </code></b></td><td>0&hellip;1</td><td></td><td>SDR</td><td>Adobe RGB (1998 and Wide Gamut).<br />Reference white is 160&nbsp;cd/m<sup>2</sup>.</td></tr>
 <tr><td><b><code>&quot;romm&quot;      </code></b></td><td>0&hellip;1</td><td></td><td>SDR</td><td>ProPhoto, ROMM.<br />Reference white is 142&nbsp;cd/m<sup>2</sup>.</td></tr>
@@ -2002,6 +2003,7 @@ and 16-bit integer for <code>nativetostack16</code>.</p>
 <ul>
 <li><code>resample</code>: fixed 14 to 16 bit AVX2 conversion path, thanks to NSQY for the report.</li>
 <li><code>transfer</code>: Added L* transfer function.</li>
+<li><code>transfer</code>: Added Arri LogC4 transfer function.</li>
 <li><code>primaries</code>: Added Arri Wide Gamut 4 colorspace.</li>
 <li>Program path without x86 SIMD: fixed wrong conversions affecting a lot of functions (noticed on ARM/Apple). Thanks to SaltyChiang for the fix.</li>
 </ul>

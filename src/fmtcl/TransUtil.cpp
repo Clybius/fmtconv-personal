@@ -37,6 +37,7 @@ http://www.wtfpl.net/ for more details.
 #include "fmtcl/TransOpLinPow.h"
 #include "fmtcl/TransOpLog3G10.h"
 #include "fmtcl/TransOpLogC.h"
+#include "fmtcl/TransOpLogC4.h"
 #include "fmtcl/TransOpLogTrunc.h"
 #include "fmtcl/TransOpPow.h"
 #include "fmtcl/TransOpPowOfs.h"
@@ -165,6 +166,10 @@ TransCurve	TransUtil::conv_string_to_curve (const std::string &str)
 	else if (str == "logc3")
 	{
 		c = TransCurve_LOGC3;
+	}
+	else if (str == "logc4")
+	{
+		c = TransCurve_LOGC4;
 	}
 	else if (str == "canonlog")
 	{
@@ -447,6 +452,9 @@ TransUtil::OpSPtr	TransUtil::conv_curve_to_op (TransCurve c, bool inv_flag, Tran
 			TransCst::_lstar_slope,
 			0, 100 // Arbitrary high number for the upper bound (unspecified)
 		));
+		break;
+	case TransCurve_LOGC4:
+		ptr = OpSPtr (new TransOpLogC4 (inv_flag));
 		break;
 	default:
 		assert (false);
