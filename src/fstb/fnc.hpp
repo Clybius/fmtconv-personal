@@ -23,8 +23,10 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 /*\\\ INCLUDE FILES \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
 #include "fstb/def.h"
+#include "fstb/bit_cast.h"
 
 #include <algorithm>
+#include <limits>
 #include <type_traits>
 
 #if (fstb_ARCHI == fstb_ARCHI_X86)
@@ -64,6 +66,32 @@ namespace detail
 
 
 
+template <int OFFSET, typename T>
+constexpr int	get_prev_pow_2_ce_internal (T x) noexcept
+{
+	assert (x > 0);
+
+	int            p = OFFSET - 1;
+
+	while ((x & ~(T (0xFFFF))) != 0)
+	{
+		p += 16;
+		x >>= 16;
+	}
+	while ((x & ~(T (0xF))) != 0)
+	{
+		p += 4;
+		x >>= 4;
+	}
+	while (x > 0)
+	{
+		++p;
+		x >>= 1;
+	}
+
+	return p;
+}
+
 template <int OFFSET>
 int	get_prev_pow_2_internal (uint32_t x) noexcept
 {
@@ -96,23 +124,7 @@ int	get_prev_pow_2_internal (uint32_t x) noexcept
 
 #else
 
-	int            p = OFFSET - 1;
-
-	while ((x & ~(uint32_t (0xFFFF))) != 0)
-	{
-		p += 16;
-		x >>= 16;
-	}
-	while ((x & ~(uint32_t (0xF))) != 0)
-	{
-		p += 4;
-		x >>= 4;
-	}
-	while (x > 0)
-	{
-		++p;
-		x >>= 1;
-	}
+	const int      p = get_prev_pow_2_ce_internal <OFFSET> (x);
 
 #endif
 
@@ -174,7 +186,18 @@ constexpr int	sgn (T x) noexcept
 template <class T>
 constexpr T	limit (T x, T mi, T ma) noexcept
 {
-	return (x < mi) ? mi : ((x > ma) ? ma : x);
+	// Incites the compiler to use conditional moves.
+	// It seems to make a difference on MSVC.
+	if constexpr (std::is_arithmetic_v <T>)
+	{
+		using std::min;
+		using std::max;
+		return max (min (x, ma), mi);
+	}
+	else
+	{
+		return (x < mi) ? mi : ((x > ma) ? ma : x);
+	}
 }
 
 
@@ -720,16 +743,74 @@ constexpr bool	is_eq_ulp (float v1, float v2, int32_t tol) noexcept
 		return (v1 == v2);
 	}
 
-	union Combo
-	{
-		float          _f;
-		int32_t        _i;
-	};
-	const Combo    c1 { v1 };
-	const Combo    c2 { v2 };
-	const auto     dif = std::abs (c2._i - c1._i);
+	const auto     i1  = bit_cast <int32_t> (v1);
+	const auto     i2  = bit_cast <int32_t> (v2);
+	const auto     dif = std::abs (i2 - i1);
 
 	return (dif <= tol);
+}
+
+
+
+// Returns the algebraic distance in ULP between a and b (order: a - b).
+// Not finite: return maximum possible as error
+// Opposite sign: min or max, depending on the order
+// Same if one argument is 0 and the other one non-zero.
+int32_t	calc_dist_ulp (float a, float b) noexcept
+{
+	static_assert (sizeof (float) == sizeof (int32_t), "float is not 32 bits");
+
+	// +0.f and -0.f should compare equal
+	if (a == b)
+	{
+		return 0;
+	}
+	else if (   ! std::isfinite (a) || ! std::isfinite (b)
+	         || (a >= 0 && b <= 0))
+	{
+		return std::numeric_limits <int32_t>::max ();
+	}
+	else if (a <= 0 && b >= 0)
+	{
+		return std::numeric_limits <int32_t>::min ();
+	}
+
+	const auto     a_i  = bit_cast <int32_t> (a);
+	const auto     b_i  = bit_cast <int32_t> (b);
+	const auto     dist = a_i - b_i;
+
+	return dist;
+}
+
+
+
+int64_t	calc_dist_ulp (double a, double b) noexcept
+{
+	static_assert (sizeof (double) == sizeof (int64_t), "double is not 64 bits");
+
+	// +0.0 and -0.0 should compare equal
+	if (a == b)
+	{
+		return 0;
+	}
+	else if (   ! std::isfinite (a) || ! std::isfinite (b)
+	         || (a >= 0 && b <= 0))
+	{
+		return std::numeric_limits <int64_t>::max ();
+	}
+	else if (a <= 0 && b >= 0)
+	{
+		return std::numeric_limits <int64_t>::min ();
+	}
+
+	int64_t        a_i;
+	int64_t        b_i;
+	memcpy (&a_i, &a, sizeof (a));
+	memcpy (&b_i, &b, sizeof (b));
+
+	const auto     dist = a_i - b_i;
+
+	return dist;
 }
 
 
@@ -758,6 +839,14 @@ int	get_prev_pow_2 (uint32_t x) noexcept
 
 
 
+template <typename T>
+constexpr int	get_prev_pow_2_ce (T x) noexcept
+{
+	return detail::get_prev_pow_2_ce_internal <0> (x);
+}
+
+
+
 /*
 ==============================================================================
 Name: get_next_pow_2
@@ -775,8 +864,9 @@ int	get_next_pow_2 (uint32_t x) noexcept
 {
 	assert (x > 0);
 
+#if ! defined (NDEBUG)
 	const auto     x_org = x;
-	fstb::unused (x_org);
+#endif
 
 	-- x;
 	if (x == 0)
@@ -790,6 +880,22 @@ int	get_next_pow_2 (uint32_t x) noexcept
 	assert ((uint64_t (1) << (p - 1)) <  uint64_t (x_org));
 
 	return p;
+}
+
+
+
+template <typename T>
+constexpr int	get_next_pow_2_ce (T x) noexcept
+{
+	assert (x > 0);
+
+	-- x;
+	if (x == 0)
+	{
+		return 0;
+	}
+
+	return detail::get_prev_pow_2_ce_internal <1> (x);
 }
 
 
@@ -958,7 +1064,6 @@ constexpr T	ipowpc (T x) noexcept
 {
 	static_assert (N >= 0, "N must be positive or null.");
 
-#if (__cplusplus >= 201402L)
 	if (N == 0)
 	{
 		return T (1);
@@ -975,12 +1080,6 @@ constexpr T	ipowpc (T x) noexcept
 	}
 
 	return x;
-#else
-	return
-		  (N == 0) ? 1
-		: (N >  1) ? (sq (ipowpc <N / 2> (x)) * (((N & 1) != 0) ? x : 1))
-		: x;
-#endif
 }
 
 

@@ -37,7 +37,7 @@ namespace fstb
 #define fstb_ARCHI_X86	(1)
 #define fstb_ARCHI_ARM	(2)
 
-#if defined (__i386__) || defined (_M_IX86) || defined (_X86_) || defined (_M_X64) || defined (_M_AMD64) || defined (__x86_64__) || defined (__amd64__) || defined (__amd64) || defined (__INTEL__)
+#if defined (__i386__) || defined (_M_IX86) || defined (_M_IA64) || defined (_X86_) || defined (_M_X64) || defined (_M_AMD64) || defined (__x86_64__) || defined (__amd64__) || defined (__amd64) || defined (__INTEL__)
 	#define fstb_ARCHI	fstb_ARCHI_X86
 #elif defined (__arm__) || defined (__arm) || defined (__arm64__) || defined (__arm64) || defined (_M_ARM) || defined (__aarch64__)
 	#define fstb_ARCHI	fstb_ARCHI_ARM
@@ -48,7 +48,7 @@ namespace fstb
 
 
 // Native word size, in power of 2 bits
-#if defined (_WIN64) || defined (__64BIT__) || defined (__amd64__) || defined (__x86_64__) || defined (__aarch64__) || defined (__arm64__) || defined (__arm64)
+#if defined (_WIN64) || defined (_M_IA64) || defined (__64BIT__) || defined (__amd64__) || defined (__x86_64__) || defined (__aarch64__) || defined (__arm64__) || defined (__arm64)
 	#define fstb_WORD_SIZE_L2      (6)
 	#define fstb_WORD_SIZE        (64)
 	#define fstb_WORD_SIZE_BYTE    (8)
@@ -140,6 +140,16 @@ namespace fstb
 #else
    #define  fstb_FORCEINLINE   inline
 #endif
+
+#if defined (_MSC_VER)
+   #define  fstb_FLATTEN   [[msvc::flatten]]
+#elif defined (__GNUC__)
+	#define  fstb_FLATTEN   [[gnu::flatten]]
+#else
+   #define  fstb_FLATTEN
+#endif
+
+#define fstb_FLATINLINE fstb_FLATTEN fstb_FORCEINLINE
 
 
 
