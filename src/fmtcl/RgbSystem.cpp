@@ -88,7 +88,7 @@ void	RgbSystem::set (PrimariesPreset preset)
 		_rgb [0] = { 0.670 , 0.330  };
 		_rgb [1] = { 0.210 , 0.710  };
 		_rgb [2] = { 0.140 , 0.080  };
-		_white   = { 0.2848, 0.2932 };
+		_white   = { 0.28315, 0.29711 };
 		break;
 	case PrimariesPreset_BT470BG:
 		_rgb [0] = { 0.640 , 0.330  };
