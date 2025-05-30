@@ -2004,6 +2004,7 @@ and 16-bit integer for <code>nativetostack16</code>.</p>
 <p><b>r31, 202x-xx-xx</b></p>
 <ul>
 <li><code>resample</code>: fixed 14 to 16 bit AVX2 conversion path, thanks to NSQY for the report.</li>
+<li><code>resample</code>: fixed chroma placement: U and V vertical positions for interlaced PAL-DV were swapped and vertical subsampling &gt; 2 was not handled at all. Thanks to Chortos-2 for the report.</li>
 <li><code>transfer</code>: Added L* transfer function.</li>
 <li><code>transfer</code>: Added Arri LogC4 transfer function.</li>
 <li><code>primaries</code>: Added Arri Wide Gamut 4 colorspace.</li>
