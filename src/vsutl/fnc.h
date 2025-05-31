@@ -38,6 +38,7 @@ bool     is_vs_rgb (int cf);
 bool     is_vs_yuv (int cf);
 bool     is_vs_same_colfam (int lhs, int rhs);
 
+bool     is_constant_colorspace (const ::VSVideoInfo &vi);
 bool     is_constant_format (const ::VSVideoInfo &vi);
 bool     has_chroma (int cf);
 bool     has_chroma (const ::VSVideoFormat &fmt);

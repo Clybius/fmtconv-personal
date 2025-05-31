@@ -61,9 +61,9 @@ Bitdepth::Bitdepth (const ::VSMap &in, ::VSMap &out, void *user_data_ptr, ::VSCo
 	const bool     avx2_flag = cpu_opt.has_avx2 ();
 
 	// Checks the input clip
-	if (! vsutl::is_constant_format (_vi_in))
+	if (! vsutl::is_constant_colorspace (_vi_in))
 	{
-		throw_inval_arg ("only constant pixel formats are supported.");
+		throw_inval_arg ("only constant colorspace are supported.");
 	}
 
 	// Source colorspace

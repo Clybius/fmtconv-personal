@@ -62,9 +62,16 @@ bool	is_vs_same_colfam (int lhs, int rhs)
 
 
 
+bool	is_constant_colorspace (const ::VSVideoInfo &vi)
+{
+	return (vi.format.colorFamily != ::cfUndefined);
+}
+
+
+
 bool	is_constant_format (const ::VSVideoInfo &vi)
 {
-	return (vi.height > 0 && vi.width > 0 && vi.format.colorFamily != ::cfUndefined);
+	return (vi.height > 0 && vi.width > 0 && is_constant_colorspace (vi));
 }
 
 

@@ -335,6 +335,11 @@ floating point or a range conversion is detected.</p>
 <var>fulls</var> or <var>fulld</var> parameter has been explicitely
 defined.</p>
 
+<p><span class="host">Vapoursynth</span> The function can process input clips
+of variable frame size.
+There is no limit on the frame height, however a variable frame width cannot
+excess 65536 pixels.</p>
+
 <h4>Parameters</h4>
 
 <p class="var">clip</p>
@@ -2003,6 +2008,7 @@ and 16-bit integer for <code>nativetostack16</code>.</p>
 
 <p><b>r31, 202x-xx-xx</b></p>
 <ul>
+<li><code>bitdepth</code>/Vapoursynth: can work on clips of variable frame size. The function was already designed to handle this feature, but the parameter check was more strict than necessary. Thanks to Vardë for the report.</li>
 <li><code>resample</code>: fixed 14 to 16 bit AVX2 conversion path, thanks to NSQY for the report.</li>
 <li><code>resample</code>: fixed chroma placement: U and V vertical positions for interlaced PAL-DV were swapped and vertical subsampling &gt; 2 was not handled at all. Thanks to Chortos-2 for the report.</li>
 <li><code>transfer</code>: Added L* transfer function.</li>

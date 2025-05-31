@@ -44,6 +44,8 @@ public:
 	explicit       ErrDifBufFactory (long width);
 	virtual        ~ErrDifBufFactory () {}
 
+	long           get_width () const noexcept;
+
 
 
 /*\\\ PROTECTED \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/

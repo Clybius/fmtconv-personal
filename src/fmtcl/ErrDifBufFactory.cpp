@@ -40,6 +40,13 @@ ErrDifBufFactory::ErrDifBufFactory (long width)
 
 
 
+long	ErrDifBufFactory::get_width () const noexcept
+{
+	return _width;
+}
+
+
+
 /*\\\ PROTECTED \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 
 
