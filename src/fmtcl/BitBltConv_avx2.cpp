@@ -341,7 +341,9 @@ void	BitBltConv::bitblt_ixx_to_x16_avx2 (typename DST::Ptr::Type dst_ptr, ptrdif
 	dst_stride /= sizeof (typename DST::Ptr::DataType);
 
 	const __m256i  zero     = _mm256_setzero_si256 ();
-	const __m256i  val_ma   = _mm256_set1_epi16 ((DBD < 16) ? (1 << DBD) - 1 : 0);
+	const __m256i  val_ma   = _mm256_set1_epi16 (
+		(DBD < 16) ? static_cast <int16_t> ((1 << DBD) - 1) : 0
+	);
 	const __m256i  mask_lsb = _mm256_set1_epi16 (0x00FF);
 
 	const int      w16 = w & -16;
