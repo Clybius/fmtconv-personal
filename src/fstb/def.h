@@ -19,10 +19,6 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 #if ! defined (fstb_def_HEADER_INCLUDED)
 #define	fstb_def_HEADER_INCLUDED
 
-#if defined (_MSC_VER)
-	#pragma warning (4 : 4250)
-#endif
-
 
 
 /*\\\ INCLUDE FILES \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
@@ -204,7 +200,7 @@ namespace fstb
 
 #if fstb_ARCHI == fstb_ARCHI_ARM
 
-	#if defined (__ARM_NEON_FP)
+	#if defined (__ARM_NEON_FP) || fstb_WORD_SIZE == 64
 		#if fstb_ENDIAN == fstb_ENDIAN_BIG
 			#error ARM SIMD is supported only on little endian architectures
 		#endif
@@ -257,12 +253,12 @@ constexpr double EXP1    = 2.7182818284590452353602874713527;
 constexpr double SQRT2   = 1.4142135623730950488016887242097;
 
 // Exact representation in 32-bit float
-constexpr float  TWOP16  = 65536.f;
-constexpr float  TWOP32  = TWOP16 * TWOP16;
-constexpr float  TWOP64  = TWOP32 * TWOP32;
-constexpr float  TWOPM16 = 1.f / TWOP16;
-constexpr float  TWOPM32 = 1.f / TWOP32;
-constexpr float  TWOPM64 = 1.f / TWOP64;
+constexpr float  TWOP16  = 0x1.0p+16f;
+constexpr float  TWOP32  = 0x1.0p+32f;
+constexpr float  TWOP64  = 0x1.0p+64f;
+constexpr float  TWOPM16 = 0x1.0p-16f;
+constexpr float  TWOPM32 = 0x1.0p-32f;
+constexpr float  TWOPM64 = 0x1.0p-64f;
 
 constexpr float  ANTI_DENORMAL_F32     = 1e-20f;
 constexpr double ANTI_DENORMAL_F64     = 1e-290;

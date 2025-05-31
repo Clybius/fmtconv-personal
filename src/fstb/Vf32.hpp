@@ -1518,8 +1518,7 @@ Vf32	Vf32::loadu_part (const MEM *ptr, int n) noexcept
 	const auto     nv_ptr = const_cast <std::remove_volatile_t <MEM> *> (ptr);
 	const float *  f_ptr = reinterpret_cast <const float *> (nv_ptr);
 #if ! defined (fstb_HAS_SIMD)
-	Vf32           v;
-	v._x [0] = f_ptr [0];
+	Vf32           v { f_ptr [0], 0, 0, 0 };
 	for (int i = 1; i < n; ++i)
 	{
 		v._x [i] = f_ptr [i];

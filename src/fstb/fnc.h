@@ -19,10 +19,6 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 #if ! defined (fstb_fnc_HEADER_INCLUDED)
 #define	fstb_fnc_HEADER_INCLUDED
 
-#if defined (_MSC_VER)
-	#pragma warning (4 : 4250) // "Inherits via dominance."
-#endif
-
 
 
 /*\\\ INCLUDE FILES \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/

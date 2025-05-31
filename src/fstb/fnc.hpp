@@ -603,7 +603,7 @@ int	trunc_int (T x) noexcept
 template <class T>
 int	conv_int_fast (T x) noexcept
 {
-	static_assert (std::is_floating_point <T>::value, "T must be floating point");
+	static_assert (std::is_floating_point_v <T>, "T must be floating point");
 
 	int            p;
 
@@ -678,7 +678,7 @@ Throws: Nothing
 template <class T>
 constexpr std::array <T, 2>	divmod_floor (T num, T den) noexcept
 {
-	static_assert (std::is_integral <T>::value, "T must be an integer");
+	static_assert (std::is_integral_v <T>, "T must be an integer");
 	assert (den != T (0));
 
 	auto           d = num / den;
@@ -697,7 +697,7 @@ constexpr std::array <T, 2>	divmod_floor (T num, T den) noexcept
 template <class T>
 constexpr bool	is_null (T val, T eps) noexcept
 {
-	static_assert (std::is_floating_point <T>::value, "T must be floating point");
+	static_assert (std::is_floating_point_v <T>, "T must be floating point");
 	assert (eps >= 0);
 
 	return (fabs (val) <= eps);
@@ -708,7 +708,7 @@ constexpr bool	is_null (T val, T eps) noexcept
 template <class T>
 constexpr bool	is_eq (T v1, T v2, T eps) noexcept
 {
-	static_assert (std::is_floating_point <T>::value, "T must be floating point");
+	static_assert (std::is_floating_point_v <T>, "T must be floating point");
 	assert (eps >= 0);
 
 	return is_null (v2 - v1, eps);
@@ -719,7 +719,7 @@ constexpr bool	is_eq (T v1, T v2, T eps) noexcept
 template <class T>
 constexpr bool	is_eq_rel (T v1, T v2, T tol) noexcept
 {
-	static_assert (std::is_floating_point <T>::value, "T must be floating point");
+	static_assert (std::is_floating_point_v <T>, "T must be floating point");
 	assert (tol >= 0);
 
 	const T        v1a = T (fabs (v1));
@@ -957,14 +957,14 @@ public:
 template <class T, int S>
 constexpr T	sshift_l (T x) noexcept
 {
-	static_assert (std::is_integral <T>::value, "T must be integer");
+	static_assert (std::is_integral_v <T>, "T must be integer");
 	return fnc_ShiftGeneric <T, (S < 0) ? -S : S, (S > 0)>::sh (x);
 }
 
 template <class T, int S>
 constexpr T	sshift_r (T x) noexcept
 {
-	static_assert (std::is_integral <T>::value, "T must be integer");
+	static_assert (std::is_integral_v <T>, "T must be integer");
 	return fnc_ShiftGeneric <T, (S < 0) ? -S : S, (S < 0)>::sh (x);
 }
 
@@ -1087,7 +1087,7 @@ constexpr T	ipowpc (T x) noexcept
 template <class T>
 constexpr T	rcp_uint (int x) noexcept
 {
-	static_assert (std::is_floating_point <T>::value, "T must be floating point");
+	static_assert (std::is_floating_point_v <T>, "T must be floating point");
 
 	constexpr int  table_len = 256;
 	constexpr auto rcp_arr   = detail::rcpi_lookup <T, table_len> ();
@@ -1136,8 +1136,8 @@ constexpr T	find_extremum_pos_parabolic (T r1, T r2, T r3) noexcept
 template <class T>
 constexpr T	rotl (T x, int k) noexcept
 {
-	static_assert (std::is_integral <T>::value, "T must be integer");
-	static_assert (std::is_unsigned <T>::value, "T must be unsigned");
+	static_assert (std::is_integral_v <T>, "T must be integer");
+	static_assert (std::is_unsigned_v <T>, "T must be unsigned");
 	constexpr auto bitdepth = int (sizeof (T) * CHAR_BIT);
 	assert (k >= 0);
 	assert (k < bitdepth);
@@ -1151,8 +1151,8 @@ constexpr T	rotl (T x, int k) noexcept
 template <class T>
 constexpr T	rotr (T x, int k) noexcept
 {
-	static_assert (std::is_integral <T>::value, "T must be integer");
-	static_assert (std::is_unsigned <T>::value, "T must be unsigned");
+	static_assert (std::is_integral_v <T>, "T must be integer");
+	static_assert (std::is_unsigned_v <T>, "T must be unsigned");
 	constexpr auto bitdepth = int (sizeof (T) * CHAR_BIT);
 	assert (k >= 0);
 	assert (k < bitdepth);
@@ -1176,7 +1176,7 @@ template <class T>
 T	read_unalign (const void *ptr) noexcept
 {
 	static_assert (
-		std::is_trivially_copyable <T>::value, "T must be trivially copiable"
+		std::is_trivially_copyable_v <T>, "T must be trivially copiable"
 	);
 	assert (ptr != nullptr);
 
@@ -1191,7 +1191,7 @@ template <class T>
 void	write_unalign (void *ptr, T val) noexcept
 {
 	static_assert (
-		std::is_trivially_copyable <T>::value, "T must be trivially copiable"
+		std::is_trivially_copyable_v <T>, "T must be trivially copiable"
 	);
 	assert (ptr != nullptr);
 
@@ -1209,7 +1209,7 @@ void    copy_no_overlap (T * fstb_RESTRICT dst_ptr, const T * fstb_RESTRICT src_
 	assert (src_ptr != nullptr);
 	assert (nbr_elt > 0);
 
-	if (std::is_trivially_copyable <T>::value)
+	if constexpr (std::is_trivially_copyable_v <T>)
 	{
 		memcpy (dst_ptr, src_ptr, nbr_elt * sizeof (*dst_ptr));
 	}
