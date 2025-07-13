@@ -26,6 +26,7 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 #include "fmtcl/ContFirGauss.h"
 #include "fmtcl/ContFirLanczos.h"
 #include "fmtcl/ContFirLinear.h"
+#include "fmtcl/ContFirMKS2021.h"
 #include "fmtcl/ContFirRect.h"
 #include "fmtcl/ContFirSinc.h"
 #include "fmtcl/ContFirSnh.h"
@@ -132,6 +133,11 @@ void	KernelData::create_kernel_base (std::string kernel_fnc, std::vector <double
 		hash_byte (KType_LANCZOS);
 		hash_val (taps);
 		_k_uptr = std::unique_ptr <ContFirInterface> (new ContFirLanczos (taps));
+	}
+	else if (strcmp (name.c_str (), "mks2021") == 0)
+	{
+		hash_byte (KType_MKS2021);
+		_k_uptr = std::unique_ptr <ContFirInterface> (new ContFirMKS2021);
 	}
 	else if (strcmp (name.c_str (), "blackman") == 0)
 	{

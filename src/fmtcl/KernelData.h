@@ -79,6 +79,7 @@ private:
 		KType_LINEAR,
 		KType_CUBIC,
 		KType_LANCZOS,
+		KType_MKS2021,
 		KType_BLACKMAN,
 		KType_BLACKMAN_MINLOBE,
 		KType_SPLINE,

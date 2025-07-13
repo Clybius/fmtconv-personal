@@ -124,6 +124,8 @@ commonsrc = \
         ../../src/fmtcl/ContFirLanczos.h \
         ../../src/fmtcl/ContFirLinear.cpp \
         ../../src/fmtcl/ContFirLinear.h \
+        ../../src/fmtcl/ContFirMKS2021.cpp \
+        ../../src/fmtcl/ContFirMKS2021.h \
         ../../src/fmtcl/ContFirRect.cpp \
         ../../src/fmtcl/ContFirRect.h \
         ../../src/fmtcl/ContFirSinc.cpp \
